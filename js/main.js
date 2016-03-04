@@ -1,29 +1,33 @@
+'use strict';
+
 (function() {
-    function init() {
-        var observer = new MutationObserver(function(mutRec) {
-            if(mutRec.addedNodes) {
-                walkAndGyllefy(Array.prototype.slice.call(mutRec.addedNodes));
-            }
-        });
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-        walkAndGyllefy(document.body);
+    function traverse(el) {
+        var n,
+            walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+        while(n = walk.nextNode()) gillefy(n);
     }
 
-    function walkAndGyllefy(startPoint) {
-        requestAnimationFrame(function() {
-            var walker = document.createTreeWalker(startPoint, NodeFilter.SHOW_TEXT, null, false),
-                next,
-                textNodes = [];
-            while(next = walker.nextNode()) textNodes.push(next);
-            textNodes.forEach(function(textNode) {
-                textNode.nodeValue = textNode.nodeValue.replace(/Neanderthal/gi, 'Gyllenhaal');
-                textNode.nodeValue = textNode.nodeValue.replace(/Neandertal/gi, 'Gyllenhall');
+    function gillefy(n) {
+        n.nodeValue = n.nodeValue.replace(/neanderthal/ig, 'Jake Gyllenhaal');
+        n.nodeValue = n.nodeValue.replace(/neandertal/ig, 'Jake Gyllenhall');
+    }
+
+    function init() {
+        traverse(document.body);
+        var mutObs = new MutationObserver(function(mutations, observer) {
+            mutations.forEach(function(mutation) {
+                if(mutation.type === 'childList') {
+                    Array.prototype.slice.call(mutation.addedNodes).forEach(function(n) {
+                        traverse(n);
+                    });
+                }
             });
         });
+        mutObs.observe(document.body, {
+            childList: true,
+            characterData: true,
+            subtree: true
+        });
     }
-
     init();
 })();
