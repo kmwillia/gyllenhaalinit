@@ -3,11 +3,27 @@
     <head>
         <meta charset="utf-8">
         <title>Options</title>
+        <style media="screen">
+            .option {
+                margin-left: 2rem;
+            }
+            .option-block > .title {
+                font-weight: bold;
+                margin-bottom: 1em;
+            }
+            .option > input {
+                margin-right: 1em;
+            }
+        </style>
+        <script src="js/options.js"></script>
     </head>
     <body>
-        <h1>Hello</h1>
-        <p>
-            words
-        </p>
+        <div class="option-block">
+            <h2 class="title">Images</h2>
+            <div class="option">
+                <input id="imagesReplaceAll" type="checkbox" name="images">
+                <label for="imagesReplaceAll">Replace all images with Gyllenhaal</label>
+            </div>
+        </div>
     </body>
 </html>
