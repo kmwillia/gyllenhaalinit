@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Gyllenhaalin' it",
     "version": "1.0.0",
-    "description": "Corrects Gyllenhaal misspellings across the internet",
+    "description": "Correcting Gyllenhaal misspellings across the internet",
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
@@ -16,5 +16,8 @@
     },
     "permissions": [
         "storage"
+    ],
+    "web_accessible_resources": [
+        "resources/gyllenhaal/*.jpg"
     ]
 }
