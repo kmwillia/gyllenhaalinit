@@ -18,6 +18,6 @@
         "storage"
     ],
     "web_accessible_resources": [
-        "resources/gyllenhaal/*.jpg"
+        "rsc/pics/*"
     ]
 }

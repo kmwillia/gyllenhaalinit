@@ -19,14 +19,15 @@
 
     function init() {
         getOptions({
-            imagesReplaceAll: false
+            replaceImages: false,
+            pluralsWithMaggie: false
         }).then(function(options) {
             updateView(options);
         }).catch(function(error) {
             console.log(error);
         });
 
-        [].slice.call(document.getElementsByClassName('option-block')).forEach(function(el) {
+        Array.from(document.getElementsByClassName('option-block')).forEach(function(el) {
             el.addEventListener('click', optionsClickDispatch);
         });
     }
