@@ -24,7 +24,7 @@
         }).then(function(options) {
             updateView(options);
         }).catch(function(error) {
-            console.log(error);
+            console.error(error);
         });
 
         Array.from(document.getElementsByClassName('option-block')).forEach(function(el) {
@@ -33,7 +33,6 @@
     }
 
     function updateView(options) {
-        console.log(options);
         for(var key in options) {
             if(options.hasOwnProperty(key)) {
                 let el = document.getElementById(key);
@@ -41,6 +40,7 @@
                     let elType = el.getAttribute('type');
                     if(elType === 'checkbox') {
                         el.checked = options[key];
+                        toggleContainerHighlight(el.parentNode, options[key]);
                     } else {
                         el.value = options[key];
                     }
@@ -50,9 +50,8 @@
     }
 
     function updateData(options) {
-        console.log(options);
         saveOptions(options).catch(function(error) {
-            console.log(error);
+            console.error(error);
         });
     }
 
@@ -64,6 +63,7 @@
 
             if(elType === 'checkbox') {
                 value = e.target.checked;
+                toggleContainerHighlight(e.target.parentNode, e.target.checked);
             } else {
                 value = e.target.value;
             }
@@ -71,6 +71,10 @@
             options[e.target.id] = value;
             updateData(options);
         }
+    }
+
+    function toggleContainerHighlight(container, selected) {
+        container.classList.toggle('selected', selected);
     }
 
     init();
