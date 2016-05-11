@@ -2,12 +2,13 @@
     "manifest_version": 2,
     "name": "Gyllenhaalin' it",
     "version": "1.0.0",
-    "description": "Replaces all misspellings (neanderthal) of Jake Gyllenhaal's name with the correct spelling.  Can also replace all images with images of Jake.",
+    "description": "Replaces all misspellings of Jake Gyllenhaal's name with the correct spelling.  Can also replace all images with images of Jake.",
+    "homepage_url": "https://github.com/kmwillia/gyllenhaalinit",
     "icons": {
-        "16": "icons/JS-16.png",
-        "32": "icons/JS-32.png",
-        "48": "icons/JS-48.png",
-        "128": "icons/JS-128.png"
+        "16": "icons/JG-16.png",
+        "32": "icons/JG-32.png",
+        "48": "icons/JG-48.png",
+        "128": "icons/JG-128.png"
     },
     "content_scripts": [
         {
