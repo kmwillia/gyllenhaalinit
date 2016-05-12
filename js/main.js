@@ -16,23 +16,15 @@
         setDefaults(options) {
             options = options || {};
             this.replaceImages = options.replaceImages || false;
-            this.firstName = 'Jake ';
-            this.pluralFirstName = options.pluralsWithMaggie ? 'Jake and Maggie ' : 'Jake ';
-            this.surname = {
-                us: 'Gyllenhaal',
-                uk: 'Gyllenhall'
+            this.regex = {
+                neanderthal: /neanderth{0,1}als{0,1}/gi
             };
-            this.surnameSuffix = options.pluralsWithMaggie ? '' : 's';
-            this.regExs = {
-                singular: {
-                    us: /neanderthal/gi,
-                    uk: /neandertal/gi
-                },
-                plural: {
-                    us: /neanderthals/gi,
-                    uk: /neandertals/gi
-                }
-            };
+            this.substitutions = {
+                neanderthal: 'Jake Gyllenhaal',
+                neandertal: 'Jake Gyllenhall',
+                neanderthals: options.pluralsWithMaggie ? 'Jake and Maggie Gyllenhaal' : 'Jake Gyllenhaals',
+                neandertals: options.pluralsWithMaggie ? 'Jake and Maggie Gyllenhall' : 'Jake Gyllenhalls'
+            }
             this.images = {
                 portrait: [
                     'rsc/pics/p/1.jpg', 'rsc/pics/p/2.jpg', 'rsc/pics/p/3.jpg', 'rsc/pics/p/4.jpg',
@@ -47,19 +39,25 @@
                     'rsc/pics/l/13.jpg', 'rsc/pics/l/14.jpg', 'rsc/pics/l/15.jpg'
                 ]
             };
+            this.badElements = ['NOSCRIPT', 'SCRIPT', 'STYLE', 'LINK', 'META'];
+            this.goodNodeTypes = [1, 9, 11];
         }
 
         // @method Gyllifies everything beneath the target Element
         // @params target {Element} Top level element to gyllify
         gyllify(target) {
             target = target || document.body;
-            if([1,9,11].indexOf(target.nodeType) >= 0) {
+            // Only process elements that can have text nodes
+            if(this.goodNodeTypes.indexOf(target.nodeType) >= 0) {
                 var str;
                 var textNode;
                 // Replace any substrings in all text nodes beneath the target element
                 var walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT, null, null, false);
                 while(textNode = walker.nextNode()) {
-                    this.replaceNodeText(textNode);
+                    // Don't process text nodes under restricted tags
+                    if(this.badElements.indexOf(textNode.parentElement.tagName) === -1) {
+                        this.replaceNodeText(textNode);
+                    }
                 }
                 // Replace any images with appropriately oriented Gyllenhaal images
                 if(this.replaceImages) {
@@ -69,11 +67,10 @@
         }
 
         observe(target) {
-            var self = this;
-            var obs = new MutationObserver(function(mutations, observer) {
+            var obs = new MutationObserver((mutations) => {
                 for(let mutation of mutations) {
                     if(mutation.type === 'childList') {
-                        Array.from(mutation.addedNodes).forEach(self.gyllify.bind(self));
+                        Array.from(mutation.addedNodes).forEach(this.gyllify.bind(this));
                     }
                 }
             });
@@ -84,10 +81,7 @@
         // @params textNode {TextNode} TextNode to replace substrings in
         replaceNodeText(textNode) {
             var str = textNode.nodeValue;
-            str = str.replace(this.regExs.plural.us, this.pluralFirstName + this.surname.us + this.surnameSuffix);
-            str = str.replace(this.regExs.plural.uk, this.pluralFirstName + this.surname.uk + this.surnameSuffix);
-            str = str.replace(this.regExs.singular.us, this.firstName + this.surname.us);
-            str = str.replace(this.regExs.singular.uk, this.firstName + this.surname.uk);
+            str = str.replace(this.regex.neanderthal, (match) => this.substitutions[match.toLowerCase()]);
             textNode.nodeValue = str;
         }
 
@@ -116,8 +110,6 @@
     chrome.storage.sync.get({
         replaceImages: false,
         pluralsWithMaggie: false
-    }, function(options) {
-        new Gyllenhaal(options);
-    });
+    }, (options) => { new Gyllenhaal(options); });
 
 })();

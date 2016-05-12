@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Gyllenhaalin' it",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Replaces the term Neaderthal with Jake Gyllenhaal.  Can also replace all images with images of Jake.",
     "homepage_url": "https://github.com/kmwillia/gyllenhaalinit",
     "icons": {
