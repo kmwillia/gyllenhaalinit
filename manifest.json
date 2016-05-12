@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Gyllenhaalin' it",
     "version": "1.0.0",
-    "description": "Replaces all misspellings of Jake Gyllenhaal's name with the correct spelling.  Can also replace all images with images of Jake.",
+    "description": "Replaces the term Neaderthal with Jake Gyllenhaal.  Can also replace all images with images of Jake.",
     "homepage_url": "https://github.com/kmwillia/gyllenhaalinit",
     "icons": {
         "16": "icons/JG-16.png",
